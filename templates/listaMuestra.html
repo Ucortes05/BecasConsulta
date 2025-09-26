@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2 class="mb-3 text-primary">Resultados de la búsqueda: "{{ termino }}"</h2>
+
+{% if resultados %}
+<div class="resultados-lista">
+    {% for curp, registros in resultados.items() %}
+        <div class="card mb-3">
+            <h5 class="text-dark">{{ registros[0]["NOM_COMPLETO"] }}</h5>
+            <p class="small-text mb-2"><strong>CURP:</strong> {{ curp }}</p>
+
+            {% if registros|length > 1 %}
+                <button type="button" class="btn btn-outline-primary btn-sm" onclick="toggleDetalles('{{ curp }}')">
+                    Ver registros ({{ registros|length }})
+                </button>
+            {% endif %}
+
+            <!-- Sección de detalles -->
+            <div id="detalles-{{ curp }}" style="display: {% if registros|length == 1 %}block{% else %}none{% endif %}; margin-top:10px;">
+                {% for registro in registros %}
+                    <div class="detalle card mb-2 p-2">
+                        {% if registros|length > 1 %}
+                            <p class="small-text fw-bold mb-1">Registro {{ loop.index }}</p>
+                            <hr class="mt-0 mb-1">
+                        {% endif %}
+                        {% for col in columnas %}
+                            <p class="small-text mb-0">
+                                <strong>{{ col }}:</strong>
+                                {{ registro[col]|string|replace("nan", "No Aplica")|default("No Aplica") }}
+                            </p>
+                        {% endfor %}
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    {% endfor %}
+</div>
+
+<!-- Botones de navegación -->
+<div class="buttons">
+    <a href="{{ url_for('seleccionar_campos') }}" class="btn btn-secondary me-2">Regresar</a>
+    <a href="{{ url_for('home') }}" class="btn btn-secondary">Salir</a>
+</div>
+
+{% else %}
+<p class="text-center">No se encontraron resultados.</p>
+{% endif %}
+
+<script>
+function toggleDetalles(curp) {
+    const detalles = document.getElementById("detalles-" + curp);
+    detalles.style.display = (detalles.style.display === "none") ? "block" : "none";
+}
+</script>
+{% endblock %}

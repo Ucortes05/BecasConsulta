@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Consulta de Becas</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+    th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+    th { background-color: #f4f4f4; }
+    .subtabla {
+      margin: 10px 0;
+      width: 95%;
+      border: 1px solid #ccc;
+    }
+    .subtabla th {
+      background-color: #e9e9e9;
+    }
+    .hidden { display: none; }
+    .toggle-btn {
+      background: #007bff;
+      color: white;
+      border: none;
+      padding: 5px 10px;
+      cursor: pointer;
+      border-radius: 4px;
+    }
+    .toggle-btn:hover { background: #0056b3; }
+    footer {
+      margin-top: 40px;
+      text-align: center;
+      font-size: 0.9em;
+      color: #555;
+      border-top: 1px solid #ccc;
+      padding-top: 10px;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>Resultados de búsqueda</h2>
+  <table id="tabla-principal">
+    <thead>
+      <tr>
+        <th>CURP</th>
+        <th>Nombre</th>
+        <th>Municipio</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody id="tabla-body">
+      <!-- Filas dinámicas -->
+    </tbody>
+  </table>
+
+  <footer>
+    Creado por Ulises Cortés, Dpto de Análisis y Procesamiento de Datos de la Coordinación de Becas del IEA
+  </footer>
+
+  <script>
+    // 🔹 Ejemplo de datos (esto en la práctica vendrá del backend Flask en JSON)
+    const data = {
+      "CURP123": {
+        "NomCompleto": "Juan Pérez López",
+        "Municipio": "Aguascalientes",
+        "Solicitudes": [
+          {"Estatus": "Activo", "Referencia": "12345", "FechaRef": "2025-06-01", "Sede": "Sec. Centro"},
+          {"Estatus": "En Proceso", "Referencia": "67890", "FechaRef": "2025-07-10", "Sede": "Sec. Centro"}
+        ]
+      },
+      "CURP987": {
+        "NomCompleto": "María López García",
+        "Municipio": "Jesús María",
+        "Solicitudes": [
+          {"Estatus": "Rechazado", "Referencia": "54321", "FechaRef": "2025-05-15", "Sede": "Primaria Sur"}
+        ]
+      }
+    };
+
+    // Renderizar tabla principal
+    const tablaBody = document.getElementById("tabla-body");
+
+    Object.entries(data).forEach(([curp, alumno]) => {
+      // Fila principal
+      const fila = document.createElement("tr");
+      fila.innerHTML = `
+        <td>${curp}</td>
+        <td>${alumno.NomCompleto}</td>
+        <td>${alumno.Municipio}</td>
+        <td><button class="toggle-btn" onclick="toggleSolicitudes('${curp}')">Ver solicitudes</button></td>
+      `;
+      tablaBody.appendChild(fila);
+
+      // Fila oculta con subtabla
+      const filaSub = document.createElement("tr");
+      filaSub.classList.add("hidden");
+      filaSub.id = "sub-" + curp;
+
+      let subtabla = `
+        <td colspan="4">
+          <table class="subtabla">
+            <thead>
+              <tr>
+                <th>Estatus</th>
+                <th>Referencia</th>
+                <th>Fecha</th>
+                <th>Sede</th>
+              </tr>
+            </thead>
+            <tbody>
+      `;
+
+      alumno.Solicitudes.forEach(s => {
+        subtabla += `
+          <tr>
+            <td>${s.Estatus}</td>
+            <td>${s.Referencia}</td>
+            <td>${s.FechaRef}</td>
+            <td>${s.Sede}</td>
+          </tr>
+        `;
+      });
+
+      subtabla += `
+            </tbody>
+          </table>
+        </td>
+      `;
+
+      filaSub.innerHTML = subtabla;
+      tablaBody.appendChild(filaSub);
+    });
+
+    // Función toggle expandir/colapsar
+    function toggleSolicitudes(curp) {
+      const fila = document.getElementById("sub-" + curp);
+      fila.classList.toggle("hidden");
+    }
+  </script>
+</body>
+</html>

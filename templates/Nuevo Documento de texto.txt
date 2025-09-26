@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h2>Búsqueda de Alumno</h2>
+
+    <form method="POST" action="{{ url_for('inicio') }}">
+        <input type="text" name="termino" placeholder="Ingrese CURP o Nombre" required>
+        <div class="buttons">
+            <button type="submit" class="btn">Buscar</button>
+            <a href="{{ url_for('salir') }}" class="btn-secondary">Salir</a>
+        </div>
+    </form>
+{% endblock %}

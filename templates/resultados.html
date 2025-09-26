@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{% block content %}
+<h3 class="mb-4 text-primary" style="font-size:22px;">Resultados de {{ alumno }}</h3>
+
+
+<div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+    {% for reg in registros %}
+    {% set estatus = reg['ESTATUS_GENERAL'] | string | trim | title %}
+    <div class="col">
+        <div class="card h-100 shadow-sm border-0 rounded-4">
+            <!-- Header: solo Nombre y Ciclo Escolar -->
+            <div class="card-header d-flex justify-content-between align-items-center rounded-top"
+                 style="
+                 {% if estatus == 'Becado' %}background-color:#28a745; color:white;
+                 {% elif estatus == 'Rechazo' %}background-color:#dc3545; color:white;
+                 {% else %}background-color:#ffc107; color:#212529;{% endif %}
+                 font-weight:600; font-size:1rem; padding:0.75rem 1rem;">
+                <div>
+                    {{ reg['NOM_COMPLETO'] }} <small>({{ reg['CICLO_ESCOLAR'] }})</small>
+                </div>
+                {% if estatus == 'Becado' %}
+                    <i class="bi bi-check-circle-fill" title="Becado"></i>
+                {% elif estatus == 'Rechazo' %}
+                    <i class="bi bi-x-circle-fill" title="Rechazo"></i>
+                {% else %}
+                    <i class="bi bi-clock-fill" title="En proceso"></i>
+                {% endif %}
+            </div>
+
+            <!-- Body: todos los campos seleccionados -->
+            <div class="card-body" style="background:#f8f9fa;">
+                {% for col in columnas %}
+                    <p class="mb-1"><strong>{{ labels.get(col, col) }}:</strong> {{ reg[col] }}</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+<!-- Botón fijo -->
+<a href="{{ url_for('buscar_alumno') }}" class="btn btn-secondary btn-sm boton-fijo">
+    <i class="bi bi-arrow-left-circle"></i> Regresar
+</a>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+
+<style>
+.card {
+    transition: transform 0.2s, box-shadow 0.3s;
+    max-height: 75vh;   /* limita la altura al 75% de la pantalla */
+    overflow-y: auto;   /* activa scroll vertical dentro de la tarjeta */
+}
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 25px rgba(0,0,0,0.15);
+}
+.card-body p {
+    font-size: 0.8rem;
+    color: #333;
+    margin-bottom: 0.4rem;
+}
+.card-header i {
+    font-size: 1.0rem;
+}
+
+/* Botón siempre visible */
+.boton-fijo {
+    position: fixed;
+    bottom: 45px;
+    left: 20px;
+    z-index: 1000;
+}
+</style>
+{% endblock %}

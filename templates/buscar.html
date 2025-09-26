@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block content %}
+<h3 class="mb-3">Buscar Alumno</h3>
+
+<form method="POST" action="{{ url_for('buscar_alumno') }}">
+    <div class="mb-3">
+        <input type="text" name="termino" class="form-control" placeholder="Ingrese CURP, nombre o apellido">
+    </div>
+    <button type="submit" class="btn btn-primary">Buscar</button>
+</form>
+
+{% if mensaje %}
+<p class="text-danger mt-3">{{ mensaje }}</p>
+{% endif %}
+{% endblock %}

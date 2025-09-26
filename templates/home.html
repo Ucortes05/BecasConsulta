@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block content %}
+
+<style>
+    .btn-cuerpo {
+        padding: 12px 24px;
+        font-size: 16px;
+        background-color: #007bff;
+        color: white;
+        border-radius: 6px;
+        text-decoration: none;
+        display: inline-block;
+        margin: 10px;
+    }
+    .btn-cuerpo:hover {
+        background-color: #0056b3;
+    }
+</style>
+
+<div class="container">
+    <!-- Botón visible para todos -->
+    <a href="{{ url_for('buscar_alumno') }}" class="btn-cuerpo">Consulta de Alumnos</a>
+
+    <!-- Botón visible solo para administradores -->
+    {% if session.get("rol") == "admin" %}
+    <a href="{{ url_for('admin_panel') }}" class="btn-cuerpo">Administración de usuarios</a>
+    {% endif %}
+</div>
+
+{% endblock %}

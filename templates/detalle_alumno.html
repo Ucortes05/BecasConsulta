@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% block content %}
+{% if not alumno %}
+    <p class="text-danger">No se encontraron registros para este alumno.</p>
+{% else %}
+    <h3 class="mb-4 text-primary">Detalle del Alumno</h3>
+    <h5 class="mb-4"><i class="bi bi-person-circle"></i> {{ alumno }}</h5>
+
+    <div class="accordion" id="accordionCiclos">
+    {% for ciclo, registros in ciclos_dict.items() %}
+        <div class="accordion-item mb-3 shadow-sm border-success rounded">
+            <h2 class="accordion-header" id="heading-{{ ciclo }}">
+                <button class="accordion-button collapsed bg-success text-white" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-{{ ciclo }}" aria-expanded="false" aria-controls="collapse-{{ ciclo }}">
+                    Ciclo Escolar: {{ ciclo }}
+                </button>
+            </h2>
+            <div id="collapse-{{ ciclo }}" class="accordion-collapse collapse" aria-labelledby="heading-{{ ciclo }}" data-bs-parent="#accordionCiclos">
+                <div class="accordion-body">
+                    <div class="row row-cols-1 row-cols-md-2 g-3">
+                        {% for reg in registros %}
+                        <div class="col">
+                            <div class="card shadow-sm border-info h-100">
+                                <div class="card-body">
+                                    {% for col in columnas %}
+                                        {% set valor = reg[col] %}
+                                        <p class="mb-1">
+                                            <strong>{{ labels[col] if col in labels else col }}:</strong> 
+                                            {% if col == "ESTATUS_GENERAL" %}
+                                                <span class="{% if valor == 'Becado' %}text-success{% elif valor == 'Rechazo' %}text-danger{% else %}text-warning{% endif %}">
+                                                    {{ valor }}
+                                                </span>
+                                            {% else %}
+                                                {{ valor }}
+                                            {% endif %}
+                                        </p>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+    </div>
+
+    <div class="mt-4">
+        <a href="{{ url_for('buscar_alumno') }}" class="btn btn-secondary">
+            <i class="bi bi-arrow-left"></i> Nueva búsqueda
+        </a>
+    </div>
+{% endif %}
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+{% endblock %}

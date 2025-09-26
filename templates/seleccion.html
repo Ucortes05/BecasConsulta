@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Selecciona los campos que deseas consultar</h2>
+
+<form method="POST" action="{{ url_for('mostrar') }}">
+    <input type="hidden" name="termino" value="{{ termino }}">
+    <h2>Seleccione los campos a mostrar:</h2>
+    {% for col in columnas %}
+        <label><input type="checkbox" name="columnas" value="{{ col }}"> {{ col }}</label><br>
+    {% endfor %}
+    <button type="submit" class="btn">Mostrar Resultados</button>
+</form>
+
+<style>
+    h2 {
+        color: #003366;
+        margin-bottom: 20px;
+    }
+    .form-container {
+        max-width: 700px;
+        margin: 20px auto;
+        text-align: left;
+    }
+    .checkboxes {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+        gap: 10px;
+        margin-bottom: 20px;
+    }
+    .checkbox-label {
+        background: #fff;
+        padding: 10px;
+        border-radius: 6px;
+        border: 1px solid #ccc;
+        display: flex;
+        align-items: center;
+        font-size: 14px;
+    }
+    .checkbox-label input {
+        margin-right: 8px;
+    }
+</style>
+{% endblock %}

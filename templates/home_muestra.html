@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Consulta de Alumnos</title>
+    <style>
+        body { font-family: Arial, sans-serif; background:#f5f5f5; margin:0; padding:0; text-align:center; }
+        .header { background-color:#003366; color:white; padding:20px 0; }
+        .header img { height:80px; }
+        .container { margin-top:150px; }
+        .btn { padding:12px 24px; font-size:16px; background-color:#007bff; color:white; border-radius:6px; text-decoration:none; display:inline-block; margin: 10px; }
+        .btn:hover { background-color:#0056b3; }
+        footer { background-color:#003366; color:white; text-align:center; padding:10px 0; font-size:12px; position:fixed; bottom:0; width:100%; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <img src="{{ url_for('static', filename='logo_iea.png') }}" alt="IEA">
+        <h1>Consulta de Alumnos</h1>
+    </div>
+
+    <div class="container">
+        <!-- Botón visible para todos -->
+        <a href="{{ url_for('buscar_alumno') }}" class="btn">Ingresar a la consulta</a>
+
+        <!-- Botón visible solo para administradores -->
+        {% if session.get("rol") == "admin" %}
+        <a href="{{ url_for('admin_panel') }}" class="btn">Administrador de usuarios</a>
+        {% endif %}
+    </div>
+
+    <footer>
+        Desarrollado por Ulises Cortes, Dpto de Análisis y Procesamiento de Datos de la Coordinación de Becas del IEA
+    </footer>
+</body>
+</html>

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Consulta de Alumnos{% endblock %}</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    <style>
+        body { font-family: Arial, sans-serif; background: #f9f9f9; margin:0; padding:0; }
+        
+        /* Header */
+        .header { 
+            background-color: #003366; 
+            color: white; 
+            padding: 10px; 
+            text-align: center; 
+            position: relative; 
+        }
+        .header img { height: 60px; vertical-align: middle; }
+        .header h1 { font-size: 20px; margin: 0; }
+
+        /* Botones arriba a la derecha */
+        .header-buttons {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            display: flex;
+            gap: 10px;
+        }
+
+        /* Footer */
+        footer { 
+            background-color: #003366; 
+            color: white; 
+            text-align:center; 
+            padding:10px 0; 
+            font-size:12px; 
+            position:fixed; 
+            bottom:0; 
+            width:100%; 
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <img src="{{ url_for('static', filename='logo_iea.png') }}" alt="IEA">
+        <h1>{% block header %}Consulta de Alumnos{% endblock %}</h1>
+
+        {% if session.get("usuario") %}
+<div class="header-buttons">
+    <a href="{{ url_for('home') }}" class="btn btn-sm btn-primary">
+        <i class="bi bi-house-door"></i> Home
+    </a>
+    <a href="{{ url_for('logout') }}" class="btn btn-sm btn-light">
+        <i class="bi bi-box-arrow-right"></i> Cerrar sesión
+    </a>
+</div>
+<!-- Nombre del usuario debajo de los botones -->
+<div class="text-end text-white fw-bold" style="font-size:1.0rem; margin-top:0px; margin-right:0;">
+    Hola, {{ session.get("usuario") }}
+</div>
+{% endif %}
+
+
+    </div>
+
+    <div class="container mt-4">
+        {% block content %}{% endblock %}
+    </div>
+
+    <footer>
+        Desarrollado por Ulises Cortes, Dpto de Análisis y Procesamiento de Datos de la Coordinación de Becas del IEA
+    </footer>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+</body>
+</html>

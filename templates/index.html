@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container" style="max-width: 800px; margin: 30px auto;">
+
+    <h2 style="text-align:center; color:#003366;">Detalles del Alumno</h2>
+
+    {% if registros %}
+        {% for alumno in registros %}
+        <div class="card" style="margin:15px auto; background:#fff; padding:20px 25px; border-radius:10px; box-shadow:0 2px 6px rgba(0,0,0,0.1);">
+            {% for col in columnas %}
+                <p><strong>{{ col }}:</strong> {{ alumno[col] }}</p>
+            {% endfor %}
+        </div>
+        {% endfor %}
+    {% else %}
+        <p style="text-align:center; color:red;">{{ mensaje or "No se encontraron registros." }}</p>
+    {% endif %}
+
+    <!-- Botones regresar y salir con el mismo estilo que los demás -->
+    <div style="text-align:center; margin:20px 0;">
+        <a href="{{ url_for('buscar_alumno') }}" class="btn">⬅ Regresar</a>
+        <a href="{{ url_for('home') }}" class="btn">Salir</a>
+    </div>
+
+</div>
+{% endblock %}

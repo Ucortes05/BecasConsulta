@@ -1,0 +1,7 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card text-center">
+    <h2>No se encontró ningún alumno con: "{{ termino }}"</h2>
+    <a href="{{ url_for('buscar_alumno') }}" class="btn btn-primary mt-3">Regresar</a>
+</div>
+{% endblock %}
