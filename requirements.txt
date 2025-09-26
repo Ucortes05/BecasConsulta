@@ -1,5 +1,7 @@
 Flask==2.3.3
 pandas==2.1.1
-openpyxl==3.1.2
+numpy==1.26.2
+openpyxl==3.1.3       # si usas Excel
+python-dotenv==1.0.0  # si usas variables de entorno
 
 
