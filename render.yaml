@@ -2,6 +2,6 @@ services:
   - type: web
     name: becas-consulta
     env: python
-    buildCommand: pip install -r requirements.txt
-    startCommand: gunicorn app:app
-    pythonVersion: 3.11.9
+    buildCommand: "pip install -r requirements.txt"
+    startCommand: "gunicorn app:app"
+    pythonVersion: 3.11.6
